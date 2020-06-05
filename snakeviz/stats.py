@@ -17,18 +17,14 @@ def table_rows(stats):
     """
     rows = []
 
+    fmt = '{0:.4g}'.format
+
     for k, v in stats.stats.items():
         flf = xhtml_escape('{0}:{1}({2})'.format(
             os.path.basename(k[0]), k[1], k[2]))
         name = '{0}:{1}({2})'.format(*k)
 
-        if v[0] == v[1]:
-            calls = str(v[0])
-        else:
-            calls = '{1}/{0}'.format(v[0], v[1])
-
-        fmt = '{0:.4g}'.format
-
+        calls = str(v[0]) if v[0] == v[1] else '{1}/{0}'.format(v[0], v[1])
         tot_time = fmt(v[2])
         cum_time = fmt(v[3])
         tot_time_per = fmt(v[2] / v[0]) if v[0] > 0 else 0
@@ -50,7 +46,7 @@ def json_stats(stats):
     keyfmt = '{0}:{1}({2})'.format
 
     def _replace_keys(d):
-        return dict((keyfmt(*k), v) for k, v in d.items())
+        return {keyfmt(*k): v for k, v in d.items()}
 
     stats.calc_callees()
 

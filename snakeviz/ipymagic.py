@@ -78,7 +78,7 @@ else:
                 ip.run_line_magic("prun", line)
 
             # start up a Snakeviz server
-            if _check_ipynb() and not ("t" in opts or "new-tab" in opts):
+            if _check_ipynb() and "t" not in opts and "new-tab" not in opts:
                 print("Embedding SnakeViz in this document...")
                 sv = open_snakeviz_and_display_in_notebook(filename)
             else:
@@ -118,9 +118,7 @@ def open_snakeviz_and_display_in_notebook(filename):
                 try:
                     s.bind(("", port))
                 except socket.error as e:
-                    if e.errno == errno.EADDRINUSE:
-                        pass
-                    else:
+                    if e.errno != errno.EADDRINUSE:
                         raise
                 else:
                     return s.getsockname()[1]

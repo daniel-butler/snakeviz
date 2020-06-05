@@ -20,11 +20,7 @@ from snakeviz import version
 
 @contextmanager
 def snakeviz(fname, port=None):
-    if port:
-        args = 'snakeviz -s --port {0}'.format(port)
-    else:
-        args = 'snakeviz -s'
-
+    args = 'snakeviz -s --port {0}'.format(port) if port else 'snakeviz -s'
     args += ' ' + fname
 
     p = sp.Popen(shlex.split(args))
